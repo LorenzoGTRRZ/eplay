@@ -3,6 +3,8 @@ import { cores } from '../../styles'
 
 export const Items = styled.ul`
   display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
 `
 
 export const Action = styled.div`
@@ -20,7 +22,6 @@ export const Action = styled.div`
 `
 
 export const Item = styled.li`
-  margin-right: 16px;
   position: relative;
 
   > img {
@@ -42,7 +43,7 @@ export const Item = styled.li`
 export const Modal = styled.div`
   position: fixed;
   top: 0;
-  left: 0%;
+  left: 0;
   width: 100%;
   height: 100%;
   z-index: 1;
@@ -54,7 +55,7 @@ export const Modal = styled.div`
     display: flex;
   }
 
-  .ovelay {
+  .overlay {
     position: absolute;
     top: 0;
     left: 0;

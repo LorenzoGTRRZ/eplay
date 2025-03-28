@@ -14,4 +14,5 @@ const Section = ({ title, background, children }: Props) => (
     </div>
   </Container>
 )
+
 export default Section

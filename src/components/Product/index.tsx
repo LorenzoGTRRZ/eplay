@@ -12,7 +12,7 @@ type Props = {
   id: number
 }
 
-export const Product = ({
+const Product = ({
   title,
   category,
   system,

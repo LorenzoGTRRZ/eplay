@@ -1,16 +1,16 @@
 import { useState } from 'react'
 
 import Section from '../Section'
+import { GalleryItem } from '../../pages/Home'
 
 import { Item, Items, Action, Modal, ModalContent } from './styles'
 
 import spiderman from '../../assets/images/banner-homem-aranha.png'
 import hogwarts from '../../assets/images/fundo_hogwarts.png'
 
-import play from '../../assets/images/botao_play.png'
-import zoom from '../../assets/images/mais_zoom.png'
-import fechar from '../../assets/images/close 1.png'
-import { GalleryItem } from '../../pages/Home'
+import play from '../../assets/images/play.png'
+import zoom from '../../assets/images/zoom.png'
+import fechar from '../../assets/images/fechar.png'
 
 const mock: GalleryItem[] = [
   {
@@ -23,7 +23,7 @@ const mock: GalleryItem[] = [
   },
   {
     type: 'video',
-    url: 'https://www.youtube.com/embed/uHGShqcAHlQ?si=u1Qoqdkpcm70YHoi'
+    url: 'https://www.youtube.com/embed/uHGShqcAHlQ'
   }
 ]
 
@@ -43,8 +43,6 @@ const Gallery = ({ defaultCover, name, items }: Props) => {
     type: 'image',
     url: ''
   })
-  const [modalEstaAberto, setModalEstaAberto] = useState(false)
-  const [modalUrl, setModalUrl] = useState('')
 
   const getMediaCover = (item: GalleryItem) => {
     if (item.type === 'image') return item.url
@@ -115,7 +113,7 @@ const Gallery = ({ defaultCover, name, items }: Props) => {
           onClick={() => {
             closeModal()
           }}
-          className="ovelay"
+          className="overlay"
         ></div>
       </Modal>
     </>
