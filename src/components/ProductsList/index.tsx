@@ -1,63 +1,113 @@
-import { Game } from '../../pages/Home'
+import React, { useEffect, useState } from 'react'
+import { useLocation, useParams } from 'react-router-dom'
+
 import Product from '../Product'
 
-import { Container, List } from './styles'
+import Loader from '../Loader'
+import { ProductListContainer, ProductListItem } from './styles'
 
 export type Props = {
   title: string
-  background: 'gray' | 'black'
-  games: Game[]
-  id?: string
+  background: 'light' | 'dark'
+  efoods?: Efood[] | CardapioItem[]
+  isCardapio?: boolean
+  isLoading?: boolean
 }
 
-export const formataPreco = (preco = 0) => {
-  return new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL'
-  }).format(preco)
-}
+const ProductList: React.FC<Props> = ({
+  title,
+  background,
+  efoods,
+  isLoading,
+  isCardapio = false
+}) => {
+  const { id } = useParams<{ id: string }>()
+  const location = useLocation()
+  const [catalogoServico, setCatalogoServico] = useState<
+    Efood[] | CardapioItem[]
+  >([])
 
-const ProductsList = ({ background, title, games, id }: Props) => {
-  const getGameTags = (game: Game) => {
-    const tags = []
-
-    if (game.release_date) {
-      tags.push(game.release_date)
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `https://fake-api-tau.vercel.app/api/efood/restaurantes/${id}`
+        )
+        if (!response.ok) {
+          throw new Error('Erro ao carregar dados')
+        }
+        const data = await response.json()
+        setCatalogoServico(Array.isArray(data) ? data : [data])
+      } catch (error) {
+        console.error('Erro ao carregar dados:', error)
+      }
     }
 
-    if (game.prices.discount) {
-      tags.push(`${game.prices.discount}%`)
+    if (efoods && efoods.length === 0) {
+      fetchData()
+    } else {
+      setCatalogoServico(efoods ?? [])
     }
+  }, [id, efoods])
 
-    if (game.prices.current) {
-      tags.push(formataPreco(game.prices.current))
+  const getEfoodTags = (efood: Efood) => {
+    const tags: string[] = []
+    if (efood.tipo) {
+      tags.push(efood.tipo)
     }
-
+    if (efood.destacado) {
+      tags.push('Destaque da semana')
+    }
     return tags
   }
 
+  if (isLoading) {
+    return <Loader />
+  }
+
   return (
-    <Container id={id} background={background}>
-      <div className="container">
+    <div className="container">
+      <ProductListContainer background={background}>
         <h2>{title}</h2>
-        <List>
-          {games.map((game) => (
-            <li key={game.id}>
-              <Product
-                id={game.id}
-                category={game.details.category}
-                description={game.description}
-                image={game.media.thumbnail}
-                infos={getGameTags(game)}
-                system={game.details.system}
-                title={game.name}
-              />
-            </li>
-          ))}
-        </List>
-      </div>
-    </Container>
+        <ProductListItem background={background}>
+          {isCardapio
+            ? (catalogoServico as CardapioItem[]).map((item) => (
+                <Product
+                  key={item.id}
+                  image={item.foto}
+                  infos={[]}
+                  title={item.nome}
+                  description={item.descricao}
+                  to={`/perfil/${id}`}
+                  background={background}
+                  currentItem={item}
+                  shouldTruncateDescription={location.pathname.includes(
+                    '/perfil'
+                  )}
+                  id={item.id}
+                />
+              ))
+            : (catalogoServico as Efood[]).map((efood) => (
+                <Product
+                  key={efood.id}
+                  image={efood.capa}
+                  infos={getEfoodTags(efood)}
+                  title={efood.titulo}
+                  nota={efood.avaliacao}
+                  description={efood.descricao}
+                  to={`/perfil/${efood.id}`}
+                  background={background}
+                  currentItem={null}
+                  shouldTruncateDescription={location.pathname.includes(
+                    '/perfil'
+                  )}
+                  id={efood.id.toString()}
+                />
+              ))}
+        </ProductListItem>
+      </ProductListContainer>
+    </div>
   )
 }
 
-export default ProductsList
+export default ProductList

@@ -1,44 +1,37 @@
-import { Container, FooterSection, Link, Links, SectionTitle } from './styles'
+import { Link } from 'react-router-dom'
+import { HashLink } from 'react-router-hash-link'
 
-const currentYear = new Date().getFullYear()
+import faceSrc from '../../assets/icons/facebook.png'
+import instaSrc from '../../assets/icons/instagram.png'
+import LogoImgHome from '../../assets/icons/logo.png'
+import twSrc from '../../assets/icons/twitter.png'
+
+import * as S from './styles'
 
 const Footer = () => (
-  <Container>
-    <div className="container">
-      <FooterSection>
-        <SectionTitle>Categorias</SectionTitle>
-        <Links>
-          <li>
-            <Link to="/categories#rpg">RPG</Link>
-          </li>
-          <li>
-            <Link to="/categories#action">Ação</Link>
-          </li>
-          <li>
-            <Link to="/categories#sports">Esportes</Link>
-          </li>
-          <li>
-            <Link to="/categories#simulation">Simulação</Link>
-          </li>
-          <li>
-            <Link to="/categories#fight">Luta</Link>
-          </li>
-        </Links>
-      </FooterSection>
-      <FooterSection>
-        <SectionTitle>Acesso rápido</SectionTitle>
-        <Links>
-          <li>
-            <Link to="/#on-sale">Promoções</Link>
-          </li>
-          <li>
-            <Link to="/#coming-soon">Em breve</Link>
-          </li>
-        </Links>
-      </FooterSection>
-      <p>{currentYear} - &copy; E-PLAY Todos os direitos reservados</p>
-    </div>
-  </Container>
+  <S.Footers className="container">
+    <S.SectionFooter>
+      <Link title="Clique aqui para retornar a pagina home" to="/">
+        <img className="imagemLogo" src={LogoImgHome} alt="efood" />
+      </Link>
+      <S.RedeSociais>
+        <HashLink to="https://www.instagram.com">
+          <img src={instaSrc} alt="Instagram" />
+        </HashLink>
+        <HashLink to="https://www.facebook.com">
+          <img src={faceSrc} alt="Facebook" />
+        </HashLink>
+        <HashLink to="https://www.twitter.com">
+          <img src={twSrc} alt="Twitter" />
+        </HashLink>
+      </S.RedeSociais>
+    </S.SectionFooter>
+    <S.Titulo>
+      A efood é uma plataforma para divulgação de estabelecimentos, a
+      responsabilidade pela entrega, qualidade dos produtos é toda do
+      estabelecimento contratado.
+    </S.Titulo>
+  </S.Footers>
 )
 
 export default Footer

@@ -1,42 +1,37 @@
-import { Imagem, Titulo, Precos } from './styles'
+import { useParams } from 'react-router-dom'
+import Loader from '../Loader'
 
-import bannerImg from '../../assets/images/banner-homem-aranha.png'
-import Tag from '../Tag'
-import Button from '../Button'
-import { Game } from '../../pages/Home'
-import { useEffect, useState } from 'react'
+import { useGetFeatureEfoodQuery } from '../../services/api'
 
-import { formataPreco } from '../ProductsList'
+import { ImgBanner } from './styles'
 
-import { useGetFeaturedGameQuery } from '../../services/api'
+type Params = {
+  id: string
+}
 
 const Banner = () => {
-  const { data: game, isLoading } = useGetFeaturedGameQuery()
+  const { id } = useParams<Params>()
+  const { data: catalogoServico, isLoading } = useGetFeatureEfoodQuery(id || '')
 
-  if (!game) {
-    return <h3>Carregando...</h3>
+  if (isLoading) {
+    return <Loader />
+  }
+
+  if (!catalogoServico) {
+    return (
+      <div className="container">
+        <h3>Serviço não encontrado</h3>
+      </div>
+    )
   }
 
   return (
-    <Imagem style={{ backgroundImage: `url(${game.media.cover})` }}>
-      <div className="container">
-        <Tag size="big">Destaque do dia</Tag>
-        <div>
-          <Titulo>{game.name}</Titulo>
-          <Precos>
-            De <span>{formataPreco(game.prices.old)}</span> <br />
-            por apenas {formataPreco(game.prices.current)}
-          </Precos>
-        </div>
-        <Button
-          type="link"
-          to={`/product/${game.id}`}
-          title="Clique aqui para aproveitar esta oferta"
-        >
-          Aproveitar
-        </Button>
-      </div>
-    </Imagem>
+    <div className="container">
+      <ImgBanner style={{ backgroundImage: `url(${catalogoServico.capa})` }}>
+        <h3>{catalogoServico.tipo}</h3>
+        <h1>{catalogoServico.titulo}</h1>
+      </ImgBanner>
+    </div>
   )
 }
 

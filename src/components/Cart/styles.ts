@@ -1,9 +1,8 @@
 import styled from 'styled-components'
-import { cores } from '../../styles'
-import { TagContainer } from '../Tag/styles'
+import { colors } from '../../styles'
 import { ButtonContainer } from '../Button/styles'
 
-import fechar from '../../assets/images/fechar.png'
+import fechar from '../../assets/icons/lixeira-de-reciclagem.png'
 
 export const Overlay = styled.div`
   position: absolute;
@@ -11,8 +10,7 @@ export const Overlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #000;
-  opacity: 0.7;
+  background: rgba(0, 0, 0, 0.8);
 `
 
 export const CartContainer = styled.div`
@@ -25,75 +23,89 @@ export const CartContainer = styled.div`
   justify-content: flex-end;
   z-index: 1;
 
-  &.is-open {
+  &.isOpen {
     display: flex;
   }
 `
 
 export const Sidebar = styled.aside`
-  background-color: ${cores.cinza};
-  z-index: 1;
-  padding: 40px 16px 0 16px;
+  background-color: ${colors.LightSalmon};
   max-width: 360px;
   width: 100%;
+  max-height: 1624px;
+  height: 100%;
+  position: relative; // Changed from left to relative positioning
+  gap: 0px;
+  opacity: 1; // Changed from 0px to 1 for visibility
+  z-index: 1;
+  padding: 16px 8px;
 
   ${ButtonContainer} {
     max-width: 100%;
     width: 100%;
+    max-height: 24px;
+    height: 24px; // Adjusted height for visibility
+  }
+
+  .empty-text {
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    text-align: center;
+    color: ${colors.FloralWhite};
   }
 `
 
 export const Prices = styled.p`
-  font-weight: bold;
+  font-family: Roboto;
   font-size: 14px;
-  color: ${cores.branca};
-  margin-bottom: 24px;
+  font-weight: 700;
+  line-height: 16.41px;
+  color: ${colors.FloralWhite};
+  margin: 40px 0 16px 0;
+  display: flex;
+  justify-content: space-between;
 
   span {
-    display: block;
-    font-size: 12px;
-    color: ${cores.cinzaClaro};
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 16.41px;
+    text-align: right;
   }
-`
-
-export const Quantity = styled.p`
-  font-weight: bold;
-  font-size: 16px;
-  color: ${cores.branca};
-  margin-top: 32px;
-  margin-bottom: 16px;
 `
 
 export const CartItem = styled.li`
   display: flex;
-  border-bottom: 1px solid ${cores.cinzaClaro};
-  padding: 8px 0;
+  background-color: ${colors.BlanchedAlmond};
+  margin: 16px 0;
   position: relative;
 
   img {
     height: 80px;
     width: 80px;
     object-fit: cover;
-    margin-right: 24px;
+    margin: 8px;
   }
 
   h3 {
-    color: ${cores.branca};
-    font-weight: bold;
-    font-size: 16px;
+    color: ${colors.LightSalmon};
+    font-family: Roboto;
+    font-size: 18px;
+    font-weight: 900;
+    line-height: 21.09px;
+    margin-top: 8px;
   }
 
   span {
     display: block;
-    color: ${cores.branca};
-    font-weight: bold;
+    color: ${colors.LightSalmon};
+    font-family: Roboto;
     font-size: 14px;
-  }
-
-  ${TagContainer} {
-    margin-right: 8px;
-    margin-top: 8px;
-    margin-bottom: 16px;
+    font-weight: 400;
+    line-height: 22px;
+    margin: 16px 0 33px 0;
   }
 
   button {
@@ -103,7 +115,8 @@ export const CartItem = styled.li`
     border: none;
     background-color: transparent;
     position: absolute;
-    top: 8px;
-    right: 0;
+    bottom: 8px;
+    right: 8px;
+    cursor: pointer;
   }
 `

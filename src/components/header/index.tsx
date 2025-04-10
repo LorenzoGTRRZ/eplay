@@ -1,15 +1,28 @@
-import { Link } from 'react-router-dom'
-
-import { HeaderBar, Links, LinkItem, CartButton } from './styles'
-
-import logo from '../../assets/images/logo.svg'
-import carrinho from '../../assets/images/carrinho.svg'
-
-import { open } from '../../store/reducers/cart'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootReducer } from '../../store'
+import { Link, useLocation, useParams } from 'react-router-dom'
 
-const Header = () => {
+import { RootReducer } from '../../store'
+import { open } from '../../store/reducers/cart'
+
+import LogoImgHome from '../../assets/icons/logo.png'
+import BannerImgHome from '../../assets/images/BannerImgHome.png'
+
+import * as S from './styles'
+
+export type Props = {
+  background: 'light' | 'dark'
+}
+
+const Header = ({ background }: Props) => {
+  const location = useLocation()
+  const { id } = useParams<{ id: string }>()
+
+  const titleText =
+    location.pathname === '/Perfil'
+      ? ''
+      : 'Viva experiências gastronômicas no conforto da sua casa'
+
   const dispatch = useDispatch()
   const { items } = useSelector((state: RootReducer) => state.cart)
 
@@ -17,32 +30,40 @@ const Header = () => {
     dispatch(open())
   }
 
+  const titleRestaurate = id ? 'Restaurantes' : ''
+  const titleCarrinho = id ? `${items.length} produto(s) no carrinho` : ''
+
   return (
-    <HeaderBar>
-      <div>
-        <Link to="/">
-          <img src={logo} alt="EPLAY" />
-        </Link>
-        <nav>
-          <Links>
-            <LinkItem>
-              <Link to="/categories">Categorias</Link>
-            </LinkItem>
-            <LinkItem>
-              <a href="#">Novidades</a>
-            </LinkItem>
-            <LinkItem>
-              <a href="#">Promoções</a>
-            </LinkItem>
-          </Links>
-        </nav>
-      </div>
-      <CartButton onClick={openCart}>
-        {items.length} - produto(s)
-        <img src={carrinho} alt="Carrinho" />
-      </CartButton>
-    </HeaderBar>
+    <S.HeaderPage className="container">
+      <S.Imagem
+        style={{ backgroundImage: `url(${BannerImgHome})` }}
+        background={background}
+      >
+        <div className="container">
+          <S.ContainerHeader>
+            <S.RestaurantName>{titleRestaurate}</S.RestaurantName>
+            <Link title="Clique aqui para retornar a pagina home" to="/">
+              <img
+                className="imagemLogoLnk"
+                src={LogoImgHome}
+                alt="efood"
+                width="150"
+                height="50"
+              />
+            </Link>
+
+            <S.CarrinhoDeProdutos>
+              {/* Coloque o evento onClick no elemento que deve abrir o carrinho */}
+              <S.CartButton role="button" onClick={openCart}>
+                {titleCarrinho}
+              </S.CartButton>
+            </S.CarrinhoDeProdutos>
+          </S.ContainerHeader>
+          <S.Titulo>{titleText}</S.Titulo>
+        </div>
+      </S.Imagem>
+    </S.HeaderPage>
   )
 }
 
-export default Header
+export default React.memo(Header)

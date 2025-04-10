@@ -1,51 +1,33 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { Game } from '../pages/Home'
 
-const api = createApi({
+type PurchaseResponse = {
+  orderId: string
+}
+
+export const api = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://fake-api-tau.vercel.app/api/eplay'
+    baseUrl: 'https://fake-api-tau.vercel.app/api/efood'
   }),
   endpoints: (builder) => ({
-    getFeaturedGame: builder.query<Game, void>({
-      query: () => 'destaque'
+    getHomePage: builder.query<Efood[], void>({
+      query: () => 'restaurantes'
     }),
-    getOnSale: builder.query<Game[], void>({
-      query: () => 'promocoes'
+    getFeatureEfood: builder.query<Efood, string>({
+      query: (id) => `restaurantes/${id}`
     }),
-    getSoon: builder.query<Game[], void>({
-      query: () => 'em-breve'
-    }),
-    getActionGames: builder.query<Game[], void>({
-      query: () => 'acao'
-    }),
-    getSportGames: builder.query<Game[], void>({
-      query: () => 'esportes'
-    }),
-    getSimulationGames: builder.query<Game[], void>({
-      query: () => 'simulacao'
-    }),
-    getFightGames: builder.query<Game[], void>({
-      query: () => 'luta'
-    }),
-    getRpgGames: builder.query<Game[], void>({
-      query: () => 'rpg'
-    }),
-    getGame: builder.query<Game, string>({
-      query: (id) => `jogos/${id}`
+    purchase: builder.mutation<PurchaseResponse, PurchasePayload>({
+      query: (body) => ({
+        url: 'checkout',
+        method: 'POST',
+        body
+      })
     })
   })
 })
 
 export const {
-  useGetFeaturedGameQuery,
-  useGetSoonQuery,
-  useGetOnSaleQuery,
-  useGetActionGamesQuery,
-  useGetSportGamesQuery,
-  useGetSimulationGamesQuery,
-  useGetFightGamesQuery,
-  useGetRpgGamesQuery,
-  useGetGameQuery
+  useGetFeatureEfoodQuery,
+  useGetHomePageQuery,
+  usePurchaseMutation
 } = api
-
 export default api
